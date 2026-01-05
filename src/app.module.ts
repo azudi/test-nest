@@ -2,16 +2,32 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import config from "./config/config"
+import { BlogModule } from './blog/blog.module';
+import { MailModule } from './mail/mail.module';
+
+
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
-    MongooseModule.forRoot(process.env.MONGO_URL),
+    BlogModule,
     ConfigModule.forRoot({
-      isGlobal: true, // Makes ConfigService available globally
+      isGlobal: true,
+      cache: true,
+      envFilePath: '.env',
+      load: [config],
     }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('database.connectionString'),
+      }),
+      inject: [ConfigService],
+    }),
+    MailModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}
