@@ -23,3 +23,14 @@ export class VerifyCodeDto {
     @IsNotEmpty()
     code: string | number;
 }
+
+export class ResetPasswordDto {
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
+    
+
+    @IsNotEmpty()
+    password: string;
+}

@@ -11,6 +11,12 @@ export default () => ({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
   },
+  corsUrls: process.env.CORS_URLS ? process.env.CORS_URLS?.split(',').map(origin => origin.trim()) : [],
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT || '0000'),
+    ttl: parseInt(process.env.REDIS_TTL || '60'),
+  },
 });
 
 

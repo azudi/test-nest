@@ -45,7 +45,6 @@ export class BlogService {
 
             return { message: "Blog deleted successfully" }
         } catch (error) {
-            console.log(error)
             if (error.code === responseConst.DUPLICATE) {
                 throw new ConflictException("Blog already Created");
             }

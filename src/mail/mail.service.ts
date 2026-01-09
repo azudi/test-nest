@@ -8,7 +8,7 @@ export class MailService {
   async sendPasswordResetEmail(to: string, token: string) {
     const resetLink = `http://localhost:5173/login?resetToken=${token}`;
     const mailOptions = {
-      from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
+      from: 'Nest test <kingsleyokgeorge@gmail.com>',
       to,
       subject: 'Password Reset',
       html: `
@@ -21,11 +21,12 @@ export class MailService {
 
   async sendResetCodeEmail(to: string, token: string) {
     const mailOptions = {
-      from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
+      from: 'Nest test <kingsleyokgeorge@gmail.com>',
       to,
       subject: 'Password Reset',
       html: `
       <p>To reset your password, please copy and past the code in the reset code input</p>
+       <p>Note Code expires in 10mins</p>
       <h1 style={{fontSize: "40px"}}>${token}</h1>
     `,
     };
@@ -33,7 +34,7 @@ export class MailService {
   }
   async sendPasswordUpdateSuccess(to: string) {
     const mailOptions = {
-      from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
+      from: 'Nest test <kingsleyokgeorge@gmail.com>',
       to,
       subject: 'Password Reset',
       text: `Your password has been reset successfully `,
@@ -42,7 +43,7 @@ export class MailService {
   }
   async sendVerificationEmail(to: string) {
     const mailOptions = {
-      from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
+      from: 'Nest test <kingsleyokgeorge@gmail.com>',
       to,
       subject: 'Email verification',
       text: `Your verification otp is `,

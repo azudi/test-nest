@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from "./config/config"
 import { BlogModule } from './blog/blog.module';
 import { MailModule } from './mail/mail.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 
 
@@ -20,6 +22,18 @@ import { MailModule } from './mail/mail.module';
       envFilePath: '.env',
       load: [config],
     }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      isGlobal: true, 
+      useFactory: (configService: ConfigService) => ({
+        store: redisStore as any,
+        url: configService.get<string>('redis.url'),
+        ttl: configService.get<number>('redis.ttl'),
+        host: configService.get<string>('redis.host'),
+        isGlobal: true,
+      }),
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -30,4 +44,4 @@ import { MailModule } from './mail/mail.module';
     MailModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
