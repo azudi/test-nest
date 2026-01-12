@@ -33,10 +33,19 @@ export class AuthService {
     ) { }
 
 
+    async isRedisUp(): Promise<boolean> {
+        try {
+            await this.cacheManager.set('health:ping', 'pong', 5);
+            const value = await this.cacheManager.get('health:ping');
+            return value === 'pong';
+        } catch (err) {
+            return false;
+        }
+    }
+
     async test() {
         const cached = await this.cacheManager.get(`user:test`);
-        console.log(cached)
-         await this.cacheManager.set(`user:test`, {message: "test"}, 60);
+        await this.cacheManager.set(`user:test`, { message: "test" }, 6000);
         if (cached) {
             return cached;
         }

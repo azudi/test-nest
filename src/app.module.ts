@@ -8,6 +8,8 @@ import { BlogModule } from './blog/blog.module';
 import { MailModule } from './mail/mail.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
+import { UploadModule } from './upload/upload.module';
+import { PaystackModule } from './paystack/paystack.module';
 
 
 
@@ -16,6 +18,8 @@ import * as redisStore from 'cache-manager-redis-store';
     AuthModule,
     UserModule,
     BlogModule,
+    UploadModule,
+    PaystackModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,

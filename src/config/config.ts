@@ -17,6 +17,14 @@ export default () => ({
     port: parseInt(process.env.REDIS_PORT || '0000'),
     ttl: parseInt(process.env.REDIS_TTL || '60'),
   },
+  cloudinary: {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  },
+  paystack: {
+    secrete_key: process.env.PAYSTACK_API_KEY,
+  }
 });
 
 

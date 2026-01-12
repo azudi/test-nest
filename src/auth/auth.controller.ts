@@ -90,4 +90,11 @@ export class AuthController {
     resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
         return this.authService.updateForgotpassword(resetPasswordDto)
     }
+
+    @Get('health/redis')
+    async redisHealth() {
+        return {
+            redis: await this.authService.isRedisUp(),
+        };
+    }
 }
