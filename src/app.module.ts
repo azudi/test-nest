@@ -10,6 +10,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { UploadModule } from './upload/upload.module';
 import { PaystackModule } from './paystack/paystack.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 
 
@@ -20,6 +21,7 @@ import { PaystackModule } from './paystack/paystack.module';
     BlogModule,
     UploadModule,
     PaystackModule,
+    TransactionModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,

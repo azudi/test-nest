@@ -179,6 +179,14 @@ export class AuthService {
     }
 
     async verifyEmail({ email }: VerifyEmailDto) {
+        const user = await this.authModel.findOne({
+            email: email.toLowerCase().trim(),
+        });
+
+        if(user){
+            throw new HttpException("User already exist", 500) 
+        }
+
         const verification = await this.verificationEmailModel.findOne({ email: email.toLowerCase().trim() });
         const code = generateCode(6);
         const codeHash = await this.hashCode(code);

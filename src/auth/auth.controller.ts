@@ -8,6 +8,7 @@ import { ForgotPasswordDto, ResetPasswordDto, VerifyCodeDto } from "./dto/forgot
 import { Roles } from "src/common/decorators/roles.decorator";
 import { RolesGuard } from "src/common/guards/roles.guard";
 import { Role } from "src/common/enums/roles.enum";
+import { ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
 
 @Controller('auth')
 
@@ -29,11 +30,74 @@ export class AuthController {
     };
 
     @Post('signup')
+    @ApiOperation({ summary: 'User Signup' })
+    @ApiBody({
+        type: CreateUserDto,
+        examples: {
+            userLogin: {
+                value: {
+                    email: "test005@yopmail.com",
+                    password: "Azudi@001",
+                    settings: {
+                        emailNotification: true
+                    }
+                }
+            },
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Sign up successful',
+        schema: {
+            example: {
+                access_token: 'eyJhbGci...',
+                refresh_token: 'eyJhbGci...',
+                user: {
+                    id: 1,
+                    email: 'user-zippy@yopmail.com',
+                    firstName: 'John',
+                    lastName: 'Doe',
+                },
+            },
+        },
+    })
+    @ApiResponse({ status: 401, description: 'Invalid credentials' })
     signup(@Body() createUserDto: CreateUserDto) {
         return this.authService.signup(createUserDto);
     };
 
+
+
     @Post('signin')
+    @ApiOperation({ summary: 'User login with email/password' })
+    @ApiBody({
+        type: LoginUserDto,
+        examples: {
+            userLogin: {
+                value: {
+                    email: 'test002@yopmail.com',
+                    password: 'Azudi@002',
+                },
+            },
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Login successful',
+        schema: {
+            example: {
+                access_token: 'eyJhbGci...',
+                refresh_token: 'eyJhbGci...',
+                user: {
+                    id: 1,
+                    email: 'user-zippy@yopmail.com',
+                    firstName: 'John',
+                    lastName: 'Doe',
+                },
+            },
+        },
+    })
+    @ApiResponse({ status: 401, description: 'Invalid credentials' })
     signin(@Body() loginUserDto: LoginUserDto) {
         return this.authService.signin(loginUserDto);
     }
@@ -72,6 +136,34 @@ export class AuthController {
     }
 
     @Post('verify-email')
+    @ApiOperation({ summary: 'User Signup verify email' })
+    @ApiBody({
+        type: CreateUserDto,
+        examples: {
+            userLogin: {
+                value: {
+                    email: "test002@yopmail.com"
+                }
+            },
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Email sent successful',
+        schema: {
+            example: {
+                access_token: 'eyJhbGci...',
+                refresh_token: 'eyJhbGci...',
+                user: {
+                    id: 1,
+                    email: 'user-zippy@yopmail.com',
+                    firstName: 'John',
+                    lastName: 'Doe',
+                },
+            },
+        },
+    })
+    @ApiResponse({ status: 401, description: 'Invalid credentials' })
     verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
         return this.authService.verifyEmail(verifyEmailDto)
     }

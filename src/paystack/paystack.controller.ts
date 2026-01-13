@@ -17,7 +17,7 @@ export class paystackController {
 
        @Post('verify')
        async verifyTransaction(@Body() verifyTransactionDto: VerifyTransactionDto) {
-           return this.paystackService.verifyTransaction(verifyTransactionDto.reference);
+           return this.paystackService.verifyTransaction(verifyTransactionDto);
        }
        
 }

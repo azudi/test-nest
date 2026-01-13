@@ -19,4 +19,8 @@ export class VerifyTransactionDto {
   @IsString()
   @IsNotEmpty()
   reference: string;
+
+  @IsString()
+  @IsNotEmpty()
+  transactionId: string;
 }
