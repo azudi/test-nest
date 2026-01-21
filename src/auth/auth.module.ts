@@ -7,6 +7,7 @@ import { UserSettings, UserSettingsSchema } from "src/user-settings/userSettings
 import { JwtAuthModule } from "src/shared/jwt-auth.module";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { MailModule } from "src/mail/mail.module";
+import { InactiveUserCron } from "src/cron/inactive-user.cron";
 
 @Module({
     imports: [
@@ -36,7 +37,7 @@ import { MailModule } from "src/mail/mail.module";
         ])
     ],
     controllers: [AuthController],
-    providers: [AuthService, JwtStrategy]
+    providers: [AuthService, JwtStrategy, InactiveUserCron]
 })
 
 export class AuthModule { }

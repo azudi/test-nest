@@ -13,11 +13,11 @@ import { VerifyTransactionDto } from "./dto/paystack.dto";
 )
 
 export class paystackController {
-       constructor( private paystackService: PaystackService) {}
+    constructor(private paystackService: PaystackService) { }
 
-       @Post('verify')
-       async verifyTransaction(@Body() verifyTransactionDto: VerifyTransactionDto) {
-           return this.paystackService.verifyTransaction(verifyTransactionDto);
-       }
-       
+    @Post('verify')
+    async verifyTransaction(@Body() verifyTransactionDto: VerifyTransactionDto) {
+        return this.paystackService.verifyTransaction(verifyTransactionDto);
+    }
+
 }

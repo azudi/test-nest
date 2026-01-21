@@ -33,23 +33,33 @@ export class AuthService {
     ) { }
 
 
-    async isRedisUp(): Promise<boolean> {
+    async isRedisUp() {
         try {
             await this.cacheManager.set('health:ping', 'pong', 5);
             const value = await this.cacheManager.get('health:ping');
-            return value === 'pong';
+            return `${value} ${'---  redis is working'}`;
         } catch (err) {
             return false;
         }
     }
 
     async test() {
-        const cached = await this.cacheManager.get(`user:test`);
-        await this.cacheManager.set(`user:test`, { message: "test" }, 6000);
+        const cached = await this.cacheManager.get(`user:users`);
         if (cached) {
-            return cached;
+            return {
+                source: 'cache',
+                data: cached
+            };
         }
-        await this.mailService.sendPasswordUpdateSuccess("jerryazubuike002@gmail.com");
+        const users = await this.authModel.find();
+        await this.cacheManager.set(`user:users`, users, 6000);
+
+        return {
+            source: 'Database',
+            data: users
+        };
+
+        // await this.mailService.sendPasswordUpdateSuccess("jerryazubuike002@gmail.com");
     }
 
     async hashCode(code: string) {
@@ -183,8 +193,8 @@ export class AuthService {
             email: email.toLowerCase().trim(),
         });
 
-        if(user){
-            throw new HttpException("User already exist", 500) 
+        if (user) {
+            throw new HttpException("User already exist", 500)
         }
 
         const verification = await this.verificationEmailModel.findOne({ email: email.toLowerCase().trim() });
@@ -224,17 +234,23 @@ export class AuthService {
         if (!passwordMatch) {
             throw new UnauthorizedException(invalidCredentialsMessage);
         }
+
+        const updatedUser = await this.authModel.findOneAndUpdate(
+            { email: user.email },
+            {
+                $set: { lastActive: new Date() },
+                $inc: { sessionVersion: 1 },
+            },
+            { new: true, runValidators: true }
+        );
+
         return {
-            access_token: this.loginEncryptedUser(user._id),
+            access_token: this.loginEncryptedUser(user._id, updatedUser?.sessionVersion),
             userId: user._id
         }
     }
 
     async getAllUsers() {
-        // await this.authModel.updateMany(
-        //     { role: { $exists: false }, isActive: { $exists: false } },
-        //     { $set: { role: Roles.USER, isActive: true } }
-        // );
         return this.authModel.find()
     }
 
@@ -277,8 +293,8 @@ export class AuthService {
         }
     }
 
-    loginEncryptedUser(userId: Types.ObjectId | string) {
-        const payload = { sub: userId };
+    loginEncryptedUser(userId: Types.ObjectId | string, sessionVersion: number = 1) {
+        const payload = { sub: userId, sessionVersion };
         return this.JwtService.sign(payload);
     }
 

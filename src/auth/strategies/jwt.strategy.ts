@@ -9,7 +9,7 @@ import { Auth } from '../auth.schema';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor( 
+  constructor(
     private configService: ConfigService,
     @InjectModel(Auth.name) private authModel: Model<Auth>,
   ) {
@@ -24,13 +24,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     try {
       const user = await this.authModel.findById(payload.sub);
 
-      if (!user || !user.isActive) {
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      if (!user.isActive) {
         throw new UnauthorizedException('User is inactive');
+      }
+
+      if (user.sessionVersion !== payload.sessionVersion) {
+        throw new UnauthorizedException('Session expired');
       }
 
       return user;
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException(error?.response?.message || 'Invalide Token');
     }
   }
 }

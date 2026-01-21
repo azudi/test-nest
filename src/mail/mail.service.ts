@@ -50,4 +50,8 @@ export class MailService {
     };
     this.mailService.sendMail(mailOptions);
   }
+
+  async sendInactiveUserEmail(email: string){
+
+  }
 }

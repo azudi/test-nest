@@ -7,10 +7,11 @@ import config from "./config/config"
 import { BlogModule } from './blog/blog.module';
 import { MailModule } from './mail/mail.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import * as redisStore from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-ioredis-yet'
 import { UploadModule } from './upload/upload.module';
 import { PaystackModule } from './paystack/paystack.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 
 
@@ -22,6 +23,7 @@ import { TransactionModule } from './transaction/transaction.module';
     UploadModule,
     PaystackModule,
     TransactionModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
@@ -31,13 +33,14 @@ import { TransactionModule } from './transaction/transaction.module';
     CacheModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      isGlobal: true, 
+      isGlobal: true,
       useFactory: (configService: ConfigService) => ({
         store: redisStore as any,
-        url: configService.get<string>('redis.url'),
-        ttl: configService.get<number>('redis.ttl'),
-        host: configService.get<string>('redis.host'),
-        isGlobal: true,
+        // url: configService.get<string>('redis.url'),
+        url: `redis://redis:6379`,
+        // ttl: configService.get<number>('redis.ttl'),
+        ttl: 60,
+        // host: configService.get<string>('redis.host') ,
       }),
     }),
     MongooseModule.forRootAsync({

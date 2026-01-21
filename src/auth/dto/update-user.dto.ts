@@ -18,7 +18,6 @@ export class UpdateUserDto {
     @IsOptional()
     phoneNumber?: string;
 
-
     @IsOptional()
     @ValidateNested()
     @Type(() => CreateUserSettingsDto)

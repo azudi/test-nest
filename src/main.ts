@@ -33,7 +33,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
 
-  await app.listen(port, '0.0.0.0'); // <- Critical for Render
+  await app.listen(port, '0.0.0.0'); 
 
   // loggerService.log(
   //   `Application is running on: ${await app.getUrl()}`,

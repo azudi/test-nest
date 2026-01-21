@@ -3,7 +3,6 @@ import { ConfigService } from "@nestjs/config";
 import { InjectModel } from "@nestjs/mongoose";
 import axios from "axios";
 import { Model } from "mongoose";
-import { Auth } from "src/auth/auth.schema";
 import { Transaction } from "src/transaction/transaction.schema";
 import { VerifyTransactionDto } from "./dto/paystack.dto";
 import { checkIdIsValid } from "src/helper";

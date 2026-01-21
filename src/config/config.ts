@@ -14,8 +14,9 @@ export default () => ({
   corsUrls: process.env.CORS_URLS ? process.env.CORS_URLS?.split(',').map(origin => origin.trim()) : [],
   redis: {
     host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT || '0000'),
+    port: parseInt(process.env.REDIS_PORT || '6379'),
     ttl: parseInt(process.env.REDIS_TTL || '60'),
+    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
   },
   cloudinary: {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

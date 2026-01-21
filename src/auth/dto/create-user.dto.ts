@@ -4,6 +4,7 @@ import {
     IsBoolean,
     IsEmail,
     IsNotEmpty,
+    IsNumber,
     IsOptional,
     IsString,
     ValidateNested,
@@ -35,6 +36,10 @@ export class CreateUserDto {
     @IsOptional()
     @IsString()
     role?: RolesType;
+
+    @IsOptional()
+    @IsNumber()
+    sessionVersion?: number;
 
     @IsOptional()
     @ValidateNested()

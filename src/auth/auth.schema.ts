@@ -19,8 +19,17 @@ export class Auth {
   @Prop({ default: true })
   isActive: boolean
 
+  @Prop({ default: new Date() })
+  lastActive: string
+
   @Prop({ default: Roles.USER })
   role: RolesType
+
+  @Prop()
+  sessionVersion?: number
+
+  @Prop({ default: false })
+  inactiveEmailSent: boolean
 
   @Prop({ required: true, select: false })
   password: string
