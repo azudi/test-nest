@@ -44,15 +44,17 @@ export class AuthService {
     }
 
     async test() {
-        const cached = await this.cacheManager.get(`user:users`);
+        const cached = await this.cacheManager.get("user");
+        const storeType = (this.cacheManager as any).store?.name || 'N/A';
         if (cached) {
             return {
                 source: 'cache',
+                storeType: storeType,
                 data: cached
             };
         }
         const users = await this.authModel.find();
-        await this.cacheManager.set(`user:users`, users, 6000);
+        await this.cacheManager.set("user", users, 3600000);
 
         return {
             source: 'Database',

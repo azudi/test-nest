@@ -7,11 +7,13 @@ import config from "./config/config"
 import { BlogModule } from './blog/blog.module';
 import { MailModule } from './mail/mail.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-ioredis-yet'
 import { UploadModule } from './upload/upload.module';
 import { PaystackModule } from './paystack/paystack.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import Redis from 'ioredis';
+import Keyv from 'keyv';
+import KeyvRedis from '@keyv/redis';
 
 
 
@@ -34,14 +36,36 @@ import { ScheduleModule } from '@nestjs/schedule';
       imports: [ConfigModule],
       inject: [ConfigService],
       isGlobal: true,
-      useFactory: (configService: ConfigService) => ({
-        store: redisStore as any,
-        // url: configService.get<string>('redis.url'),
-        url: `redis://redis:6379`,
-        // ttl: configService.get<number>('redis.ttl'),
-        ttl: 60,
-        // host: configService.get<string>('redis.host') ,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const redisUrl = configService.get<string>('redis.url');
+
+        // ---> Redis set up <--- AZUDI
+        if (!redisUrl) {
+          throw new Error('❌ REDIS URL NOT CONFIGURED');
+        }
+
+        const redis = new Redis(redisUrl, {
+          lazyConnect: false,
+          enableOfflineQueue: false,
+          maxRetriesPerRequest: 1,
+        });
+
+        redis.on('error', (err) => {
+          console.error('❌ Redis fatal error:', err.message);
+          process.exit(1);
+        });
+
+        redis.once('ready', () => {
+          console.log('✅ Redis ready');
+        });
+
+        const redisStore = new Keyv({ store: new KeyvRedis({ client: redis } as any), namespace: 'cache', });
+
+        return {
+          stores: [redisStore],
+          ttl: 3600,
+        };
+      },
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
