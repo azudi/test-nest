@@ -39,7 +39,7 @@ import KeyvRedis from '@keyv/redis';
       useFactory: async (configService: ConfigService) => {
         const redisUrl = configService.get<string>('redis.url');
 
-        // ---> Redis set up <--- AZUDI
+        // ---> Redis set up <--- 
         if (!redisUrl) {
           throw new Error('❌ REDIS URL NOT CONFIGURED');
         }
@@ -63,7 +63,7 @@ import KeyvRedis from '@keyv/redis';
 
         return {
           stores: [redisStore],
-          ttl: 3600,
+          ttl: 30,
         };
       },
     }),
