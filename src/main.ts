@@ -2,6 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+// <-- FOR THIS APP MAKE SURE TO USE NODE 24 OR HIGHER DUE TO LATEST PACKAGE SUPPORT -->
+// <-- IF YOU USE NVM YOU CAN JUST RUN THE COMMAND: nvm use 24 -->
+// <-- MAKE SURE REDIS IS RUNNING, TO ENABLE THE APP TO RUN PROPERLY -->
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
