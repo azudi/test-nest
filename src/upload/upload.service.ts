@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import { BadRequestException } from '@nestjs/common';
-import { fileTypeFromBuffer } from 'file-type'; 
+import { fileTypeFromBuffer } from 'file-type';
 
 const allowed = [
   "image/png",
@@ -28,6 +28,8 @@ export class UploadService {
       throw new BadRequestException('File buffer missing');
     }
 
+    // Dynamically import ESM-only file-type
+    const { fileTypeFromBuffer } = await import('file-type');
     const detected = await fileTypeFromBuffer(file.buffer);
 
     if (!detected) {
@@ -61,6 +63,7 @@ export class UploadService {
       size: file?.size / 1024
     };
   }
+
 
   getPublicIdFromUrl(url: string): string {
     const parts = url.split('/');
