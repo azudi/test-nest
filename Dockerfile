@@ -1,4 +1,4 @@
-# ---------- BUILD STAGE ----------
+#  BUILD STAGE ----------
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build
 
 
-# ---------- PRODUCTION STAGE ----------
+#  PRODUCTION STAGE ----------
 FROM node:20-alpine
 
 WORKDIR /app
@@ -29,5 +29,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-# Start app
 CMD ["node", "dist/main.js"]
