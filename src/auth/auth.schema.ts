@@ -19,6 +19,9 @@ export class Auth {
   @Prop({ default: true })
   isActive: boolean
 
+  @Prop({ default: false })
+  isBlocked: boolean;
+
   @Prop({ default: new Date() })
   lastActive: string
 

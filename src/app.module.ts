@@ -52,7 +52,7 @@ import KeyvRedis from '@keyv/redis';
 
         redis.on('error', (err) => {
           console.error('❌ Redis fatal error:', err.message);
-          process.exit(1);
+          // process.exit(1);
         });
 
         redis.once('ready', () => {

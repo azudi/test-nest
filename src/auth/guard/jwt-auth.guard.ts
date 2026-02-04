@@ -15,6 +15,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err, user, info) {
+    if(user && user.isBlocked){
+      throw new UnauthorizedException('User is blocked');
+    }
     if (err || !user) {
       throw err || new UnauthorizedException('Authentication required');
     }
