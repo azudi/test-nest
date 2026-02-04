@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build
 
 
-#  PRODUCTION STAGE ----------
+#  PRODUCTION STAGE ---------
 FROM node:20-alpine
 
 WORKDIR /app
