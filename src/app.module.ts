@@ -11,9 +11,11 @@ import { UploadModule } from './upload/upload.module';
 import { PaystackModule } from './paystack/paystack.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ChatGateway } from './chat/chat.gateway';
 import Redis from 'ioredis';
 import Keyv from 'keyv';
 import KeyvRedis from '@keyv/redis';
+import { ChatModule } from './chat/chat.module';
 
 
 
@@ -25,6 +27,7 @@ import KeyvRedis from '@keyv/redis';
     UploadModule,
     PaystackModule,
     TransactionModule,
+    ChatModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -48,6 +51,10 @@ import KeyvRedis from '@keyv/redis';
           lazyConnect: false,
           enableOfflineQueue: false,
           maxRetriesPerRequest: 1,
+          retryStrategy: (times) => {
+            if (times > 1) return null; // stop retrying
+            return 2000;
+          },
         });
 
         redis.on('error', (err) => {
@@ -76,5 +83,6 @@ import KeyvRedis from '@keyv/redis';
     }),
     MailModule,
   ],
+  providers: [ChatGateway],
 })
 export class AppModule { }

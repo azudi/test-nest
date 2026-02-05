@@ -21,8 +21,7 @@ export class BlogService {
 
     async createBlog(createBlogDto: CreateBlogDto) {
         try {
-            await this.blogModel.create(createBlogDto);;
-
+            await this.blogModel.create(createBlogDto);
             return { message: "Blog Created successfully" }
         } catch (error) {
             if (error.code === responseConst.DUPLICATE) {
