@@ -8,7 +8,7 @@ import { ForgotPasswordDto, ResetPasswordDto, VerifyCodeDto } from "./dto/forgot
 import { Roles } from "src/common/decorators/roles.decorator";
 import { RolesGuard } from "src/common/guards/roles.guard";
 import { Role } from "src/common/enums/roles.enum";
-import { ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CacheInterceptor, CacheKey } from "@nestjs/cache-manager";
 
 @Controller('auth')
@@ -105,8 +105,9 @@ export class AuthController {
         return this.authService.signin(loginUserDto);
     }
 
+    @ApiBearerAuth('JWT-auth')
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
     @Get('users')
     getAllusers() {
         return this.authService.getAllUsers();
