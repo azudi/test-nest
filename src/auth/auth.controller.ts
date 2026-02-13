@@ -9,7 +9,6 @@ import { Roles } from "src/common/decorators/roles.decorator";
 import { RolesGuard } from "src/common/guards/roles.guard";
 import { Role } from "src/common/enums/roles.enum";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { CacheInterceptor, CacheKey } from "@nestjs/cache-manager";
 
 @Controller('auth')
 
@@ -113,17 +112,26 @@ export class AuthController {
         return this.authService.getAllUsers();
     }
 
+    @ApiBearerAuth('JWT-auth')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
     @UseGuards(JwtAuthGuard)
     @Get('user/:id')
     getAlluserById(@Param('id') id: string) {
         return this.authService.getAllUserById(id);
     }
 
+    @ApiBearerAuth('JWT-auth')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
     @Patch('user/:id')
     updateUser(@Param('id') id: string, @Body() UpdateUserDto: UpdateUserDto) {
         return this.authService.updateUser(UpdateUserDto, id)
     }
 
+    @ApiBearerAuth('JWT-auth')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.SUPER_ADMIN)
     @Delete('user/:id')
     deleteUser(@Param('id') id: string) {
         return this.authService.deleteUser(id)
@@ -177,6 +185,9 @@ export class AuthController {
         return this.authService.verifyEmailCode(verifyEmailCodeDto)
     }
 
+    @ApiBearerAuth('JWT-auth')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
     @Patch('update-password/:id')
     updatePassword(@Param('id') id: string, @Body() updateUserPasswordDto: UpdateUserPasswordDto) {
         return this.authService.updateUserPassword(updateUserPasswordDto, id)
