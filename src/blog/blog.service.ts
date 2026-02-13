@@ -1,9 +1,8 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Blog } from "./blog.schema";
-import mongoose, { Model } from "mongoose";
-import { checkIdIsValid, checkIdResponseIsValid, generateHashedPassword } from "src/helper";
-import { UserSettings } from "src/user-settings/userSettings.schema";
+import { Model } from "mongoose";
+import { checkIdIsValid, checkIdResponseIsValid } from "src/helper";
 import { CreateBlogDto } from "./dto/blog.dto";
 import { responseConst } from "src/constants/response.const";
 

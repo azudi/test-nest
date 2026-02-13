@@ -2,7 +2,7 @@ import { ConflictException, HttpException, HttpStatus, Inject, Injectable, Inter
 import { CreateUserDto, VerifyEmailCodeDto, VerifyEmailDto } from "./dto/create-user.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Auth, SignInAuth, Verification, VerificationEmail } from "./auth.schema";
-import mongoose, { Model, ObjectId, Types } from "mongoose";
+import { Model, Types } from "mongoose";
 import { responseConst } from "src/constants/response.const";
 import { UpdateUserDto, UpdateUserPasswordDto } from "./dto/update-user.dto";
 import { checkIdIsValid, checkIdResponseIsValid, generateHashedPassword } from "src/helper";
@@ -13,8 +13,6 @@ import { JwtService } from "@nestjs/jwt";
 import { MailService } from "src/mail/mail.service";
 import { ForgotPasswordDto, ResetPasswordDto, VerifyCodeDto } from "./dto/forgot-password.dto";
 import { generateCode } from "src/utils/helper";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { Roles } from "src/constant/role";
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 

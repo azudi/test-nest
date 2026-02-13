@@ -1,10 +1,8 @@
 import {
   Body,
   Controller,
-  Delete,
   HttpCode,
   HttpStatus,
-  Param,
   ParseFilePipe,
   Post,
   UploadedFile,

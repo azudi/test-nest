@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import { BadRequestException } from '@nestjs/common';
-import { fileTypeFromBuffer } from 'file-type';
 
 const allowed = [
   "image/png",

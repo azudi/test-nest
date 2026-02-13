@@ -16,9 +16,6 @@ export class TransactionService {
         return "Transaction Service is working!";
     }
 
-    async rest() {
-        const rest = ""
-    }
     async createTransaction(createTransactionDto: CreateTransactionDto) {
         try {
             const result = await this.transactionModel.create(createTransactionDto);
