@@ -1,7 +1,7 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Transaction } from "./transaction.schema";
-import mongoose, { Model } from "mongoose";
+import { Model } from "mongoose";
 import { checkIdIsValid} from "src/helper";
 import { CreateTransactionDto } from "./dto/transaction.dto";
 
