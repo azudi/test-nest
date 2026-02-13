@@ -2,10 +2,8 @@ import { ConflictException, HttpException, HttpStatus, Injectable, InternalServe
 import { InjectModel } from "@nestjs/mongoose";
 import { Transaction } from "./transaction.schema";
 import mongoose, { Model } from "mongoose";
-import { checkIdIsValid, checkIdResponseIsValid, generateHashedPassword } from "src/helper";
-import { UserSettings } from "src/user-settings/userSettings.schema";
+import { checkIdIsValid} from "src/helper";
 import { CreateTransactionDto } from "./dto/transaction.dto";
-import { responseConst } from "src/constants/response.const";
 
 @Injectable()
 
